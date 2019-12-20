@@ -6,6 +6,11 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const app = express();
 const router = require("./router");
+const mongoose = require("mongoose");
+const keys = require("./config/keys");
+
+//DB Setup connecting mongoose with mongodb
+mongoose.connect(keys.mongoURI);
 
 //App Setup
 app.use(morgan("combined"));
