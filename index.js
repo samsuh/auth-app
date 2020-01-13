@@ -9,16 +9,19 @@ const router = require("./router");
 const mongoose = require("mongoose");
 const keys = require("./config/keys");
 
-//DB Setup connecting mongoose with mongodb
+//DB Setup connecting mongoose with instance of mongodb (currently on mongodb atlas)
 mongoose.connect(keys.mongoURI);
 
-//App Setup
+//App Setup, Express Server Setup
+//morgan and bodyParser are middleware in express.
+//morgan is a logging framework, logs for debugging
+//bodyParser parses incoming requests as JSON. might present problems later for transfering files.
 app.use(morgan("combined"));
 app.use(bodyParser.json({ type: "*/*" }));
 router(app);
 
-//Server Setup
+//Server Setup, Express talking to the outside world
 const port = process.env.PORT || 3090;
 const server = http.createServer(app);
 server.listen(port);
-console.log(port);
+console.log("Server listening on port: ", port);

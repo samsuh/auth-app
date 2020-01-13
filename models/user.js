@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   password: String,
+  company: String,
+  jobTitle: String,
 });
 
 //Create the model class, loads 'user' into userSchema and tells mongoose there's a collection named 'user'
