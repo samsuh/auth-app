@@ -31,6 +31,18 @@ userSchema.pre('save', function(next){
   })
 })
 
+//Helper to Compare Passwords for Signin; whenever we create a user object, it will have access to any functions we define on this property
+//compare newly hashed password that user is attempting to sign in with, 'candidatePassword', with the 'salt+hashedPassword' stored in database, 'this.password', and run callback
+//'this' refers to our user model
+userSchema.methods.comparePassword = function(candidatePassword, callback){
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
+    if (err){return callback(err)}
+
+    //if theyre equal, isMatch is 'true' otherwise 'false'
+    callback(null, isMatch)
+  })
+}
+
 //Create the model class, loads 'user' into userSchema and tells mongoose there's a collection named 'user'
 const ModelClass = mongoose.model("user", userSchema);
 
