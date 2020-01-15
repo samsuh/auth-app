@@ -73,11 +73,11 @@ const localLogin = new LocalStrategy({ localOptions }, function(email, password,
     })
 })
 
-//Tell passport to use thie Local Strategy we created above 
-passport.use(localLogin)
 
 //Tell passport to use this JWT strategy "jwtLogin" we created above 
 passport.use(jwtLogin)
+//Tell passport to use thie Local Strategy we created above 
+passport.use(localLogin)
 
 //verify a user is authenticated when they try to visit a protected resource on some routes. For protected routes, check with passport before allowing user to proceed.
 //did they include a jwt with the request, and if they did, is it a valid token? 

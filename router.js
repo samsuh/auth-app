@@ -30,6 +30,7 @@ module.exports = function(app) {
   app.post("/signup", Authentication.signup);
 
   //once user is auth'd, get a JWT
-  app.post("/signin", Authentication.signin)
+  app.post("/signin", requireSignin, Authentication.signin)
   //delete this comment after creating signin in authentication controller.
+  //ERROR HERE: Authentication.signin cant find req.user, which should be coming from passport.js's user.comparePassword successfully running
 };
