@@ -49,7 +49,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
 //first parameter of LocalStrategy tells passport where to look in our request for the username/pw. we're using email, not username.
 //localStrategy by default will find automatically the password field for us, but looks for 'username' property. 
 const localOptions = {usernameField:'email'}
-const localLogin = new LocalStrategy({ localOptions }, function(email, password, done){
+const localLogin = new LocalStrategy( localOptions, function(email, password, done){
     //Verify this email/password provided in the request matches one in our database, call 'done' with the 'user' if correct email/pw
     User.findOne({email:email}, function(err, user){
         //if there's an error in the search 
