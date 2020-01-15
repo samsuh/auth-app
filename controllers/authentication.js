@@ -1,7 +1,20 @@
 //process requests here; pull in request object and response object, run some logic and ultimately respond to it. 
 //POST requests to the /signup route runs the Authentication.signup function from here. 
 
+//import jwt library and config object holding jwt secret
+const jwt = require('jwt-simple');
+const keys = require("../config/keys")
+
 const User = require("../models/user");
+
+//make a function that takes a user's id and encodes it with our secret, token-for-user 
+//sub is from jwt standard 'subject' property of the token, being this specific user. 
+//iat is instantiated-at-time
+function tokenForUser(user){
+  const timestamp = Date.now()
+  return jwt.encode({ sub:user.id, iat: timestamp }, keys.JwtSecret)
+}
+
 exports.signup = function(req, res, next) {
   //test route. use Postman to send a POST request to /signup route
   //res.send({success:'true'})
@@ -45,6 +58,25 @@ exports.signup = function(req, res, next) {
     //test response: sending back the full user record for now. bad because sending back their pw too. 
     // res.json(user);
     //send back a success so we're not sending back the full user record. 
-    res.json({success: true})
+    // res.json({success: true})
+    
+    //create json web token that user can store and use later to authenticate requests 
+    //  replace success:true with the JWT that was created from the tokenForUser function defined above. 
+    res.json({token: tokenForUser(user)})
+
+    //by this point, a user would be created and JWT sent back from Express to React. 
+    //ACS interaction should happen here before completing the registration in case ACS rejects the user from being created before completing the registration. 
+
   });
 };
+
+
+//Signin route handler 
+exports.signin = function(req, res, next){
+  //User has already had their email/pw auth'd. We need to give them a JWT. 
+  //  We need to get access to the current 'user' model inside this function. passport assigns the 'user' to 'req.user' (from 'done' callback from comparePassword)
+  console.log("this is req.user: ", req.user)
+  //  meaning we can use our tokenForUser helper to give a token to the 'req.user' from passport
+  res.send({token: tokenForUser(req.user)})
+
+}
