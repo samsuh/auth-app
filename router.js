@@ -36,4 +36,8 @@ module.exports = function(app) {
   //ERROR HERE: Authentication.signin cant find req.user, which should be coming from passport.js's user.comparePassword successfully running
 
   app.post("/submitContact", SubmitContact.submitContact);
+
+  app.get("/successfullysubmittedform", (req, res) => {
+    res.send("Your email has been sent");
+  });
 };

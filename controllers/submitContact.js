@@ -31,6 +31,6 @@ exports.submitContact = function(req, res, next) {
       req.body.message
   };
   sgMail.send(msg);
-
+  res.send("email sucessfully sent!");
   //front-end will invoke 'callback()' redirecting to new page
 };
